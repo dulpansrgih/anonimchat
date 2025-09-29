@@ -33,15 +33,15 @@
             background-color: var(--background-color);
             color: var(--text-color);
             
-            /* MODIFIKASI: Hapus align-items/justify-content agar konten form bisa di-scroll */
+            /* Diperlukan untuk centering horizontal dan flow vertikal/scroll */
             display: flex;
-            justify-content: center; /* Tetap pusatkan horizontal */
+            justify-content: center; 
             
             min-height: 100vh; 
             margin: 0;
             padding: 20px;
             flex-direction: column; 
-            overflow-x: hidden; /* Cegah scroll horizontal */
+            overflow-x: hidden; 
         }
         
         /* WRAPPER UTAMA */
@@ -58,6 +58,7 @@
 
         /* --- 1. Judul Utama & Subtitle --- */
         #top-info {
+            /* MODIFIKASI: padding-bottom 5px agar lebih mepet ke banner */
             padding: 30px 20px 5px 20px; 
             text-align: center;
             background-color: var(--card-background);
@@ -72,7 +73,7 @@
             letter-spacing: 0.5px;
         }
         
-        /* MODIFIKASI: CSS Teks Berjalan */
+        /* CSS Teks Berjalan */
         #subtitle {
             font-size: 1em;
             color: var(--text-color);
@@ -102,7 +103,8 @@
         #banner-image {
             width: calc(100% - 40px); 
             height: 150px; 
-            margin: 5px auto; 
+            /* MODIFIKASI: Margin 0px di atas dan bawah (MEPET) */
+            margin: 0 auto; 
             border-radius: 8px; 
             background-image: url('/asset/Banner\ Form.png'); 
             background-size: cover;
@@ -259,7 +261,7 @@
             color: var(--error-color);
         }
 
-        /* --- MODIFIKASI: Gaya Tampilan Sukses (Layar Sukses Beranimasi) --- */
+        /* --- Gaya Tampilan Sukses (Layar Sukses Beranimasi) --- */
         #successScreen {
             text-align: center;
             padding: 50px 30px; 
@@ -299,7 +301,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- IKON SUKSES BARU: Efek 3D Pop & Bounce SVG --- */
+        /* --- IKON SUKSES: Efek 3D Pop & Bounce SVG --- */
         .success-icon {
             width: 100px; 
             height: 100px; 
@@ -359,7 +361,6 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.15); } 
         }
-        /* --- AKHIR IKON SUKSES BARU --- */
 
         #successScreen h3 {
             color: var(--primary-color); 
@@ -405,19 +406,19 @@
             display: none !important; 
         }
 
-        /* MODIFIKASI: Penyesuaian Layout saat Sukses agar bisa di-scroll jika diperlukan */
+        /* Penyesuaian Layout saat Sukses agar bisa di-scroll jika diperlukan */
         .hide-header #main-wrapper {
-            height: 100vh; /* Set tinggi wrapper menjadi 100% viewport */
+            height: 100vh; 
             display: flex; 
             flex-direction: column; 
-            justify-content: center; /* Pusatkan di tengah */
+            justify-content: center; 
             align-items: center; 
             width: 100%;
             max-width: 100%; 
             box-shadow: none; 
             background-color: transparent; 
             border-radius: 0; 
-            overflow-y: auto; /* IZINKAN SCROLL JIKA KONTEN LEBIH DARI 100VH */
+            overflow-y: auto; 
         }
         
         body.hide-header {
@@ -448,7 +449,7 @@
     <div id="main-wrapper"> 
         
         <div id="top-info">
-            <h1 id="main-title">FORM MESSAGE</h1>
+            <h1 id="main-title">FORM MESSAGE FOR ME</h1>
             <p id="subtitle">
                 <span>Kamu bisa menyampaikan secara langsung atau memberi pesan kepada saya. Anda bisa menampilkan nama atau mengosongkan nama. Semua Privacy anda tidak akan terbaca apapun, data yang terbaca adalah hasil form dan telah berhasil terkirim.</span>
             </p>
@@ -512,6 +513,10 @@
     const successScreen = document.getElementById('successScreen');
     const sendAgainButton = document.getElementById('sendAgainButton');
 
+    // TAMBAHAN: Dapatkan User Agent (Informasi Perangkat) saat script dimuat
+    const userAgent = navigator.userAgent; 
+    console.log("User Agent yang diambil:", userAgent); // Tambahkan baris ini untuk debugging
+
     // --- FUNGSI JAM OTOMATIS ---
     function updateTime() {
         const now = new Date();
@@ -564,12 +569,17 @@
             data.nama = "Anonim"; 
         }
 
+        // TAMBAHAN KRUSIAL: Masukkan informasi perangkat (User-Agent) ke objek data
+        data.perangkat = userAgent; 
+        console.log("Data yang dikirim:", data); // Tambahkan baris ini untuk debugging
+
         fetch(webAppURL, {
             method: 'POST',
             mode: 'cors', 
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
+            // Kirim semua data, termasuk kolom 'perangkat' baru
             body: new URLSearchParams(data).toString(), 
         })
         .then(response => {
