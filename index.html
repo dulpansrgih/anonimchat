@@ -32,14 +32,16 @@
             font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
+            
+            /* MODIFIKASI: Hapus align-items/justify-content agar konten form bisa di-scroll */
             display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            justify-content: center; /* Tetap pusatkan horizontal */
+            
+            min-height: 100vh; 
             margin: 0;
             padding: 20px;
             flex-direction: column; 
-            overflow: hidden; 
+            overflow-x: hidden; /* Cegah scroll horizontal */
         }
         
         /* WRAPPER UTAMA */
@@ -102,7 +104,6 @@
             height: 150px; 
             margin: 20px auto; 
             border-radius: 8px; 
-            /* Saya menggunakan placeholder untuk contoh visual */
             background-image: url('/asset/Banner\ Form.png'); 
             background-size: cover;
             background-position: center;
@@ -404,18 +405,27 @@
             display: none !important; 
         }
 
-        /* Penyesuaian Layout saat Sukses */
+        /* MODIFIKASI: Penyesuaian Layout saat Sukses agar bisa di-scroll jika diperlukan */
         .hide-header #main-wrapper {
-            height: auto; 
+            height: 100vh; /* Set tinggi wrapper menjadi 100% viewport */
             display: flex; 
             flex-direction: column; 
-            justify-content: center; 
+            justify-content: center; /* Pusatkan di tengah */
             align-items: center; 
-            min-height: 100vh; 
+            width: 100%;
+            max-width: 100%; 
             box-shadow: none; 
             background-color: transparent; 
             border-radius: 0; 
+            overflow-y: auto; /* IZINKAN SCROLL JIKA KONTEN LEBIH DARI 100VH */
         }
+        
+        body.hide-header {
+             align-items: center;
+             justify-content: center;
+             display: flex;
+        }
+        
         .hide-header #main-wrapper .container {
              background-color: transparent; 
              padding: 0;
